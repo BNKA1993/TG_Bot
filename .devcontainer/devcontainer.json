@@ -9,7 +9,12 @@
 		"vscode": {
 			"extensions": [
 				"ms-python.autopep8",
-				"k--kato.intellij-idea-keybindings"
+				"k--kato.intellij-idea-keybindings",
+				"ms-python.debugpy",
+				"ms-azuretools.vscode-docker",
+				"donjayamanne.python-extension-pack",
+				"eamodio.gitlens",
+				"ms-python.python"
 			]
 		}
 	}
