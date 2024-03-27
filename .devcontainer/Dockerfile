@@ -5,6 +5,6 @@ RUN pip install pytelegrambotapi \
 
 RUN pip install revChatGPT
 
-RUN pip install nltk python-dotenv
+RUN pip install nltk python-dotenv pillow
 
 RUN apk add git openssh-client
