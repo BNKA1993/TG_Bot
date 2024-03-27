@@ -5,10 +5,7 @@ from telebot import types  # импорт модуля из библиотеки
 import random  # импорт модуля для выбора рандомных значений
 import logging  # импорт модуля для системы логирования
 import datetime
-import re
-import nltk
-from nltk.tokenize import word_tokenize
-from PIL import Image
+
 # возможность загрузки переменных среды из файла .env
 from dotenv import load_dotenv
 load_dotenv()
@@ -31,7 +28,7 @@ random_wishes = [
     "Привет! Зарядись позитивом и силами на весь день!",
     "Привет! Желаю тебе море позитивных эмоций и успехов!",
     "Привет! Пусть этот день принесет тебе много радости!"
-]  
+]
 
 # список ответов для пользователя, которые отправляются рандомно
 random_responses = [
@@ -45,6 +42,8 @@ random_responses = [
 ]
 
 # определение функции обработки команды /start от пользователя
+
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     # создание объекта со встроенной клавиатурой
@@ -60,13 +59,14 @@ def start_message(message):
     reply_markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     # создание кнопки "Пожелания на день" для обычной клавиатуры
     itembtn_hello = types.KeyboardButton('Пожелания на день')
+    itembtn_random_photo = types.KeyboardButton('Котэ')
     # создание кнопки "Как дела?" для обычной клавиатуры
     itembtn_how_are_you = types.KeyboardButton('Как дела?')
     # Добавление кнопки "Сегодняшнее число"
-    today_button = types.KeyboardButton('Сегодняшнее число')
+    today_button = types.KeyboardButton('Текущая дата')
     # добавление созданных кнопок в объект reply_markup
-    reply_markup.add(itembtn_hello, itembtn_how_are_you, today_button)
-
+    reply_markup.add(itembtn_hello, itembtn_how_are_you,
+                     today_button, itembtn_random_photo)
 
     # отправка сообщения пользователю с приветственным сообщением и встроенной клавиатурой
     bot.send_message(
@@ -78,7 +78,6 @@ def start_message(message):
 
     logger.info(f"Пользователь {message.from_user.username} запустил бота.")
 
-    
 
 # Определяем функцию-обработчик callback-запросов
 @bot.callback_query_handler(func=lambda call: True)
@@ -112,8 +111,10 @@ def handle_h1(message):
         # Если сообщение "Как дела?", отправляем ответ о состоянии бота
         bot.send_message(
             message.chat.id, "У меня все отлично, спасибо! Как у тебя?")
-    elif message.text == "Сегодняшнее число":
+    elif message.text == "Текущая дата":
         send_today_message(message.chat.id)
+    elif message.text == "Котэ":
+        send_random_photo(message.chat.id)
     elif message.text in ["Хорошо", "хорошо", "отлично", "Отлично", "Супер", "супер"]:
         # Если сообщение соответствует одному из вариантов хорошего состояния, отправляем поздравление
         bot.send_message(message.chat.id, "Я рад за тебя!" + "\U0001F60A")
@@ -152,6 +153,11 @@ def send_random_responses(chat_id):
     bot.send_message(chat_id, random_response)
     # Записываем информацию о случайном ответе в лог
     logger.info(f"Отправлен случайный ответ пользователю с ID {chat_id}.")
+
+
+def send_random_photo(chat_id):
+    bot.send_animation(
+        chat_id, f'https://cataas.com/cat/gif?rnd={random.random()}')
 
 
 try:
