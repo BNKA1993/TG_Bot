@@ -49,9 +49,9 @@ def start_message(message):
     # создание объекта со встроенной клавиатурой
     inline_markup = types.InlineKeyboardMarkup()
     itembtn_yes = types.InlineKeyboardButton(
-        'Давай!', callback_data='yes')  # создание кнопки "Давай!"
+        'Давай!', callback_data='yes', bg_color='#007bff', text_color='#dddddd')  # создание кнопки "Давай!"
     itembtn_no = types.InlineKeyboardButton(
-        'В другой раз', callback_data='no')  # создание кнопки "В другой раз"
+        'В другой раз', callback_data='no')  # создание кнопки "В другой раз"``
     # добавление созданных кнопок в объект inline_markup
     inline_markup.add(itembtn_yes, itembtn_no)
 
@@ -78,6 +78,15 @@ def start_message(message):
 
     logger.info(f"Пользователь {message.from_user.username} запустил бота.")
 
+I_CAN_MSG='''
+Я экспериментальный бот, на мне отрабатываются разные возможности языка Python.
+На сегодняшний день я умею:
+- вести простой диалог
+- отвечать на вопрос "Как дела?"
+- показывать текущую дату
+- отправлять пожелания на день
+- отправлять смешных котэ
+'''
 
 # Определяем функцию-обработчик callback-запросов
 @bot.callback_query_handler(func=lambda call: True)
@@ -86,7 +95,7 @@ def handle_query(call):
     if call.data == 'yes':
         # Если значение равно 'yes', отправляем сообщение пользователю с подтверждением
         bot.send_message(
-            call.message.chat.id, 'Я умею спрашивать и отвечать на вопрос "Как дела?"\nПоказывать текущую дату\nОтправлять пожелания на день')
+            call.message.chat.id, I_CAN_MSG)
     # Если значение равно 'no', отправляем сообщение пользователю с сожалением
     elif call.data == 'no':
         bot.send_message(call.message.chat.id,
@@ -158,8 +167,6 @@ def send_random_responses(chat_id):
 def send_random_photo(chat_id):
     bot.send_animation(
         chat_id, f'https://cataas.com/cat/gif?rnd={random.random()}')
-
-
 try:
     bot.polling(none_stop=True, interval=0)
 except Exception as e:
