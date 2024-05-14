@@ -107,8 +107,7 @@ def handle_query(call):
 @bot.message_handler(content_types=['text'])
 def handle_h1(message):
     # Записываем информацию о полученном сообщении в лог
-    logger.info(f"Получено сообщение от пользователя {
-                message.from_user.username}: {message.text}")
+    logger.info(f"Получено сообщение от пользователя {message.from_user.username}: {message.text}")
     # Проверяем текст сообщения
     if message.text == "Привет":
         # Если сообщение "Привет", отправляем случайное пожелание
